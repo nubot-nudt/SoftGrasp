@@ -1,5 +1,12 @@
 # SoftGrasp: Adaptive Grasping for Dexterous Hand based on Multimodal Fusion Imitation Learning
 
+### Project Page | Video |Arxiv
+This repo contains the implementation of our paper:
+> **SoftGrasp: Adaptive Grasping for Dexterous Hand based on Multimodal Fusion Imitation Learning**
+> 
+> [YiHong Li](https://github.com/swagyiyi), Ce Guo, JunKai Ren, HuiZhang ,HuiMing Lu
+
+**The code  will be released after our paper  is accepted.**
 
 ## install
 run:
