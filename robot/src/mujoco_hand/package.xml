@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package>
+  <name>mujoco_hand</name>
+  <version>1.0.0</version>
+  <description>  dexmo hand to mujoco_hand</description>
+  
+  <maintainer email="nubot@nubot.com">xx</maintainer>
+  <license>BSD</license>
+  <url type="website">http://www..com/</url> 
+  <author email="nubot@nubot.com">xx</author>
+  
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>rospy</build_depend>
+  <build_depend>nubot_msgs</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <run_depend>rospy</run_depend>
+  <run_depend>nubot_msgs</run_depend>
+  <run_depend>std_msgs</run_depend>
+  <run_depend>geometry_msgs</run_depend>
+    
+</package>

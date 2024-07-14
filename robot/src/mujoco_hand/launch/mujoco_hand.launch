@@ -1,0 +1,6 @@
+<?xml version="1.0" ?>
+<launch>
+  <node name="dexmo_hand_connect_mujoco" pkg="mujoco_hand" type="mujoco_hand.py" output="screen">
+  </node>
+  
+</launch>
