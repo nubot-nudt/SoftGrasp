@@ -1,4 +1,4 @@
-# SoftGrasp Dexterous Hand Manipulation
+# SoftGrasp: Adaptive Grasping for Dexterous Hand based on Multimodal Fusion Imitation Learning
 
 
 ## install
@@ -22,7 +22,7 @@ train_utils.py ：
         else os.path.join(os.getcwd(), args.resume),
     )
 
-ckpt_path 从之前的模型恢复训练
+ckpt_path （Resume training from previous policy）
 ```
 python visualize_real.py 
 
@@ -31,11 +31,11 @@ python visualize_policy.py
 episode_times_1.csv
 | file      | Description |
 | ----------- | ----------- |
-| train.csv                 | 训练的的数据集                             |
-| val.csv                   | 测试的数据集                               |
-| test_recordings             | 实验数据集，内部命名按照episode_times_1的内容 |
-| exp_apple_1           | 固定相机拍摄画面                           |
-| exp_apple_1.pickle    | 包含人类演示动作action和observation        |
+| train.csv                 | train_dataset                            |
+| val.csv                   | Val_dataset                               |
+| val.csv                   | test_dataset                               |
+| exp_apple_1           | Fixed camera captures images                           |
+| exp_apple_1.pickle    | Contains human demonstration actions        |
 
 
 Here are what each symbol means:
@@ -43,8 +43,8 @@ Here are what each symbol means:
 | Symbol      | Description |
 | ----------- | ----------- |
 | I   | camera input from a fixed perspective        |
-| A   | The end and finger joints of a robotic arm |机械臂的末端和手指关节
-| T   | Joint torque of dexterous hands |灵巧手的关节力矩
+| A   | finger joints  |
+| T   | Joint torque of dexterous hands |
 
 
 ### Evaluate your results
@@ -60,7 +60,7 @@ To view your model's results, run <br>
 |ImiEngine      | engine.py     |
 |imitation_model| SoftGrasp_models.py |
 
-实物实验：
+Physical experiment：
 ```
 cd Data/code/hand/two_hand
 source devel/setup.bash
