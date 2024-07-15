@@ -51,7 +51,7 @@ Here are what each symbol means:
 | Symbol      | Description |
 | ----------- | ----------- |
 | I   | camera input from a fixed perspective        |
-| A   | finger joints  |
+| A   | joint angle of dexterous hands |
 | T   | Joint torque of dexterous hands |
 
 
