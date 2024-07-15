@@ -17,6 +17,10 @@ This repo contains the implementation of our paper:
 
 ![image](https://github.com/nubot-nudt/SoftGrasp/blob/main/picture/object.gif)
 
+## Systematic and Ablation Study
+
+![image](https://github.com/nubot-nudt/SoftGrasp/blob/main/picture/Ablation_Study.gif)
+
 
 ## install
 run:
