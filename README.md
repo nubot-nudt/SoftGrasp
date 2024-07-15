@@ -9,6 +9,8 @@ This repo contains the implementation of our paper:
 
 **The code  will be released after our paper  is accepted.**
 
+![image](https://github.com/nubot-nudt/SoftGrasp/blob/main/picture/object.gif)
+
 ## install
 run:
 ```
