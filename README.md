@@ -8,8 +8,15 @@ This repo contains the implementation of our paper:
 >
 
 **The code  will be released after our paper  is accepted.**
+### Video  
+## Immersive Demonstration Data Collection
+
+![image](https://github.com/nubot-nudt/SoftGrasp/blob/main/picture/teleporation.gif)
+
+## Partial display of captured objects
 
 ![image](https://github.com/nubot-nudt/SoftGrasp/blob/main/picture/object.gif)
+
 
 ## install
 run:
