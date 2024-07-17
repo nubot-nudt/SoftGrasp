@@ -1,6 +1,6 @@
 # SoftGrasp: Adaptive Grasping for Dexterous Hand Based on Multimodal Imitation Learning
 
-### Project Page | Video [Video](https://nubot-nudt.github.io/SoftGrasp/picture/video.html)
+### Project Page | [Video](https://nubot-nudt.github.io/SoftGrasp/picture/video.html)
 This repo contains the implementation of our paper:
 > **SoftGrasp: Adaptive Grasping for Dexterous Hand Based on Multimodal Imitation Learning**
 > 
