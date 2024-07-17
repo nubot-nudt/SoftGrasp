@@ -1,4 +1,4 @@
-# SoftGrasp: Adaptive Grasping for Dexterous Hand based on Multimodal Fusion Imitation Learning
+# SoftGrasp: Adaptive Grasping for Dexterous Hand Based on Multimodal Imitation Learning
 
 ### Project Page | Video
 This repo contains the implementation of our paper:
