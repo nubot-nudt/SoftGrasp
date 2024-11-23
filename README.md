@@ -4,10 +4,8 @@
 This repo contains the implementation of our paper:
 > **SoftGrasp: Adaptive Grasping for Dexterous Hand Based on Multimodal Imitation Learning**
 > 
-> [YiHong Li](https://github.com/swagyiyi), [Ce Guo](https://github.com/henghenghahei849), [Junkai Ren*](https://github.com/jkren6), Hui Zhang, Huimin Lu
+> [YiHong Li](https://github.com/swagyiyi), [Ce Guo](https://github.com/henghenghahei849), [Junkai Ren*](https://github.com/jkren6), [Bailiang Chen](https://github.com/skywalker1941), Chuang Cheng, Hui Zhang*, Huimin Lu
 >
-
-**The code  will be released after our paper  is accepted.**
 
 ### Video  
 ## Immersive Demonstration Data Collection
