@@ -3,10 +3,6 @@ from src.datasets.SoftGrasp_dataset import ImitationEpisode
 from torch.utils.data import SequentialSampler, BatchSampler
 from src.models.encoders import (
     make_image_encoder,
-    make_torque_encoder,
-    make_angle_encoder,
-    make_share_encoder,
-    make_share_POS_encoder,
     make_torque_Proprioceptionencoder,
     make_angle_Proprioceptionencoder,
 )
@@ -60,29 +56,25 @@ def main(args):
         ]
     )
 
-    train_batch_sampler = BatchSampler(SequentialSampler(train_set), batch_size=args.batch_size, drop_last=False)
     train_loader = DataLoader(train_set, args.batch_size, num_workers=8)
     val_loader = DataLoader(val_set, args.batch_size, num_workers=8, shuffle=False)
     test_loader = DataLoader(test_set, 1, num_workers=8, shuffle=False)
     I_encoder = make_image_encoder(args.encoder_dim)
-    if "mlp" in args.encoder:
-        if args.use_one_hot:
-            T_encoder = make_torque_Proprioceptionencoder(args.one_hot_torque_dim, args.encoder_dim )
-            A_encoder = make_angle_Proprioceptionencoder(args.one_hot_angle_dim, args.encoder_dim )
-            share_encoder = make_share_POS_encoder(args.share_dim, args.encoder_dim )
-        else:
-            T_encoder = make_torque_Proprioceptionencoder(args.torque_dim, args.encoder_dim )
-            A_encoder = make_angle_Proprioceptionencoder(args.angle_dim, args.encoder_dim )
-            share_encoder = make_share_POS_encoder(args.share_dim, args.encoder_dim )
+
+    if args.use_one_hot:
+        T_encoder = make_torque_Proprioceptionencoder(args.one_hot_torque_dim, args.encoder_dim )
+        A_encoder = make_angle_Proprioceptionencoder(args.one_hot_angle_dim, args.encoder_dim )
+    else:
+        T_encoder = make_torque_Proprioceptionencoder(args.torque_dim, args.encoder_dim )
+        A_encoder = make_angle_Proprioceptionencoder(args.angle_dim, args.encoder_dim )
     
-    imi_model = Actor(I_encoder,T_encoder,A_encoder,share_encoder, args).cuda()
+    imi_model = Actor(I_encoder,T_encoder,A_encoder, args).cuda()
     optimizer = torch.optim.Adam(imi_model.parameters(), lr=args.lr)
     scheduler = torch.optim.lr_scheduler.StepLR(
         optimizer, step_size=args.period, gamma=args.gamma
     )
 
     exp_dir = save_config(args)
-    # pl stuff
     pl_module = ImiEngine(
         imi_model, optimizer, train_loader, val_loader, test_loader,scheduler, args
     )
@@ -106,9 +98,8 @@ if __name__ == "__main__":
     p.add("--num_workers", default=8, type=int)
     # imi_stuff
     p.add("--conv_bottleneck", required=True, type=int)
-    # p.add("--exp_name", required=True, type=str)
-    p.add("--encoder_dim", required=True, type=int)
-    p.add("--observation_dim", required=True, type=int)
+    p.add("--encoder_dim", default=8, type=int)
+    p.add("--observation_dim", default=8, type=int)
     p.add("--torque_dim", required=True, type=int)
     p.add("--angle_dim", default=3, type=int)
     p.add("--action_dim", default=3, type=int)
@@ -116,11 +107,8 @@ if __name__ == "__main__":
     p.add("--one_hot_angle_dim", default=3, type=int)
     p.add("--picture_dim", default=3, type=int)
     p.add("--share_dim", default=3, type=int)
-    p.add("--num_stack", required=True, type=int)
-    p.add("--frameskip", required=True, type=int)
-    p.add("--use_mha", default=True, action="store_true")
-    p.add("--use_amha", default=True, action="store_true")
-    # p.add("--use_pos", default=True, action="store_true")
+    p.add("--num_stack", default=3, type=int)
+    p.add("--frameskip", default=3, type=int)
     p.add("--use_pos", required=True, type=int)
     p.add("--use_one_hot", required=True, type=int)
     p.add("--use_way", required=True)
@@ -130,24 +118,24 @@ if __name__ == "__main__":
     p.add("--val_csv", default="data/data_csv/val.csv")
     p.add("--test_csv", default="data/data_csv/test.csv")
     p.add("--data_folder", default="data/test_recordings")
-    p.add("--resized_height_v", required=True, type=int)
-    p.add("--resized_width_v", required=True, type=int)
-    p.add("--resized_height_t", required=True, type=int)
-    p.add("--resized_width_t", required=True, type=int)
+    p.add("--resized_height_v", default=3, type=int)
+    p.add("--resized_width_v", default=3, type=int)
+    p.add("--resized_height_t", default=3, type=int)
+    p.add("--resized_width_t", default=3, type=int)
     p.add("--num_episode", default=None, type=int)
     p.add("--crop_percent", required=True, type=float)
     p.add("--ablation", required=True)
     p.add("--encoder", required=True)
-    p.add("--num_heads", required=True, type=int)
-    p.add("--use_flow", default=False, action="store_true")
-    p.add("--use_holebase", default=False, action="store_true")
+    p.add("--num_heads", default=3, type=int)
+    p.add("--use_flow", default=True, action="store_true")
+    p.add("--use_holebase", default=True, action="store_true")
     p.add("--task", type=str)
-    p.add("--norm_audio", default=False, action="store_true")
+    p.add("--norm_audio", default=True, action="store_true")
     p.add("--aux_multiplier", type=float)
     p.add("--nocrop",required=True, type=int)
     p.add("--ROI",required=True, type=int)
     p.add("--ckpt", default="04-29-11:12:31-jobid=0-epoch=0-step=325.ckpt")
-    p.add("--train", default=False, action="store_true")
+    p.add("--train", default=True, action="store_true")
     p.add("--mask_height_t", required=True, type=int)
     p.add("--mask_height_v", required=True, type=int)
     p.add("--mask_width_t", required=True, type=int)
@@ -161,24 +149,9 @@ if __name__ == "__main__":
 
     ## action type
     p.add("--dis_actions", required=True, type=int)
-    ## visualize 
-    p.add("--weights_visualize_interval", required=True, type=int)
-    p.add("--weights_visualize", required=True, type=int)
-    p.add("--scores_visualize", required=True, type=int)
-    p.add("--save_scores", required=True, type=int)
-    p.add("--save_weights", required=True, type=int)
     ## data
     p.add("--train_data", type=str)
     p.add("--val_data", type=str)
-
-    # transformer
-    p.add("--hidden_dim", required=True, type=int)
-    p.add("--dropout", required=True, type=float)
-    p.add("--nheads", required=True, type=int)
-    p.add("--dim_feedforward", required=True, type=int)
-    p.add("--enc_layers", required=True, type=int)
-    p.add("--dec_layers", required=True, type=int)
-    p.add("--pre_norm", default=True, action="store_true")
 
     
     args = p.parse_args()

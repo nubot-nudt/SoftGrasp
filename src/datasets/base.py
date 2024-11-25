@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 
 
 class EpisodeDataset(Dataset):
-    def __init__(self, log_file, data_folder="data/test_recordings_0214"):
+    def __init__(self, log_file, data_folder="data/test_recordings"):
         """
         neg_ratio: ratio of silence audio clips to sample
         """
@@ -29,12 +29,7 @@ class EpisodeDataset(Dataset):
             center=False,
         )
         self.streams = [
-            "cam_gripper_color",
-            "cam_fixed_color",
-            "left_gelsight_flow",
-            "left_gelsight_frame",
         ]
-        # self.gelsight_offset = torch.as_tensor(np.array(Image.open("gelsight_offset.png"))).float().permute(2, 0, 1) / 255
         pass
 
     def get_episode(self, idx, ablation=""):
@@ -49,17 +44,14 @@ class EpisodeDataset(Dataset):
                 return None
 
         format_time = self.logs.iloc[idx].Time.replace(":", "_")
-        # print("override" + '#' * 50)
+
         trial = os.path.join(self.data_folder, format_time)
-        # with open(os.path.join(trial, "timestamps.json")) as ts:
-        #     timestamps = json.load(ts)
+
         demos = pickle.load(open(os.path.join(trial, format_time + '.pickle'), 'rb'))
-        # num_frames = 0
  
-        num_frames = len(demos["joint"] ) # 计算动作数组的行数作为长度
+        num_frames = len(demos["joint"] ) 
         num_frames = num_frames
-        # print('trial',trial)
-        # print('num_frames',num_frames)
+
         
         return (
             trial,
@@ -73,30 +65,13 @@ class EpisodeDataset(Dataset):
         raise NotImplementedError
 
     @staticmethod
-    # def load_image(trial, stream, timestep,mask_height_t ,mask_height_v ,mask_width_t,mask_width_v):
-      
-    #     if timestep == -1:
-    #         timestep = 0
-    #     # print('timestep',timestep)
-    #     img_path = os.path.join(trial, stream, str(timestep) + ".jpg")
-    #     # print('img_path:',img_path)
-    #     image = (
-    #         torch.as_tensor(np.array(Image.open(img_path))).float().permute(2, 0, 1)
-    #         / 255
-    #     )
-    #     mask = np.zeros(image.shape[:2], dtype=np.uint8)
-    #     r1 = (mask_height_t,mask_height_v, mask_width_t,mask_width_v)
-    #     mask[r1[0]:r1[1], r1[2]:r1[3]] = 255
-    #     ROI_image = cv2.bitwise_and(image, image, mask=mask)
-    #     # return image
-    #     return ROI_image
+
     def load_image(trial, stream, timestep, mask_height_t, mask_height_v, mask_width_t, mask_width_v,ROI):
       
         if timestep == -1:
             timestep = 0
         if ROI:
             img_path = os.path.join(trial, stream, f"{timestep}.jpg")
-            # print('img_path:',img_path)
             image = torch.as_tensor(np.array(Image.open(img_path))).float().permute(2, 0, 1) / 255
             image_np = image.numpy().transpose(1, 2, 0)*255
             mask = np.zeros(image_np.shape[:2], dtype=np.uint8)
@@ -105,13 +80,11 @@ class EpisodeDataset(Dataset):
             masked_image = cv2.bitwise_and(image_np, image_np, mask=mask)
             save_path = os.path.join(trial, stream, f"masked_{timestep}.jpg")
             cv2.imwrite(save_path, cv2.cvtColor(masked_image, cv2.COLOR_RGB2BGR))
-            # ROI_image = torch.as_tensor(masked_image.transpose(2, 0, 1)) 
             ROI_image = torch.as_tensor(masked_image) .float().permute(2, 0, 1) / 255
-            # print('ROI_image.shape',ROI_image.shape)
+
         else:
             img_path = os.path.join(trial, stream, f"{timestep}.jpg")
             ROI_image = torch.as_tensor(np.array(Image.open(img_path))).float().permute(2, 0, 1) / 255
-            # print('ROI_image.shape',ROI_image.shape)
         return ROI_image
 
     @staticmethod

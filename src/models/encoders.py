@@ -1,12 +1,10 @@
 from torchvision.models import resnet18
 from torchvision.models.feature_extraction import (
-    create_feature_extractor,
-    get_graph_node_names,
+    create_feature_extractor
 )
 import torch
 from torch import nn
 
-# from perceiver_pytorch import Perceiver
 import torch.nn.functional as F
 import torchaudio
 from torch.nn.modules.activation import MultiheadAttention
@@ -62,26 +60,10 @@ def make_image_encoder(out_dim=None):
     image_extractor = create_feature_extractor(image_extractor, ["layer4.1.relu_1"])
     return Encoder(image_extractor, out_dim)
 
-    
-class AngleEncoder(nn.Module):
-    def __init__(self, input_dim, output_dim):
-        super(AngleEncoder, self).__init__()
-        # 定义编码器的层和参数
-        self.fc = nn.Linear(input_dim, output_dim)
-        # self.fc = nn.Linear(input_dim, output_dim)
-        self.relu = nn.ReLU()
-        
-
-    def forward(self, x):
-        # 定义编码器的前向传播逻辑
-        x = self.fc(x)
-        x = self.relu(x)
-        return x
 
 class Angle_ProprioceptionEncoder(nn.Module):
     def __init__(self, input_dim=4, output_dim=2):
         super(Angle_ProprioceptionEncoder, self).__init__()
-        # 利用多层感知机处理本体感觉信息
         self.mlp = nn.Sequential(
             nn.Linear(input_dim, 64),
             nn.ReLU(),
@@ -89,32 +71,16 @@ class Angle_ProprioceptionEncoder(nn.Module):
             nn.ReLU(),
             nn.Linear(128, 256),
             nn.ReLU(),
-            nn.Linear(256, output_dim)  # 确保输出尺寸和类型匹配
+            nn.Linear(256, output_dim) 
         )
 
     def forward(self, x):
         x = self.mlp(x)
         return x
 
-class TorqueEncoder(nn.Module):
-    def __init__(self, input_dim, output_dim):
-        super(TorqueEncoder, self).__init__()
-        # 定义编码器的层和参数
-        self.fc = nn.Linear(input_dim, output_dim)
-        # self.fc = nn.Linear(input_dim, output_dim)
-        self.relu = nn.ReLU()
-        
-    def forward(self, x):
-        # x = x.float()
-        # 定义编码器的前向传播逻辑
-        x = self.fc(x)
-        x = self.relu(x)
-        return x
-    
 class Torque_ProprioceptionEncoder(nn.Module):
     def __init__(self, input_dim=4, output_dim=2):
         super(Torque_ProprioceptionEncoder, self).__init__()
-        # 利用多层感知机处理本体感觉信息
         self.mlp = nn.Sequential(
             nn.Linear(input_dim, 64),
             nn.ReLU(),
@@ -122,68 +88,15 @@ class Torque_ProprioceptionEncoder(nn.Module):
             nn.ReLU(),
             nn.Linear(128, 256),
             nn.ReLU(),
-            nn.Linear(256, output_dim)  # 确保输出尺寸和类型匹配
+            nn.Linear(256, output_dim) 
         )
 
     def forward(self, x):
         x = self.mlp(x)
         return x
-    
-    
-class share_Encoder_pos(nn.Module):
-    def __init__(self, input_dim=256, output_dim=2):
-        super(share_Encoder_pos, self).__init__()
-        self.mlp = nn.Sequential(
-            nn.Linear(input_dim, 64),
-            nn.ReLU(),
-            nn.Linear(64, 128),
-            nn.ReLU(),
-            nn.Linear(128, 256),
-            nn.ReLU(),
-            nn.Linear(256, output_dim)
-        )
 
-    def forward(self, x):
-        x = self.mlp(x)  
-        return x
-    
-class share_Encoder(nn.Module):
-    def __init__(self, input_dim=256, output_dim=2):
-        super(share_Encoder, self).__init__()
-        self.mlp = nn.Sequential(
-            nn.Linear(input_dim, 64),
-            nn.ReLU(),
-            nn.Linear(64, 128),
-            nn.ReLU(),
-            nn.Linear(128, 256),
-            nn.ReLU(),
-            nn.Linear(256, output_dim)
-        )
 
-    def forward(self, x):
-        # print('x.shape',x.shape)
-        x = self.mlp(x)  # 预期形状为 [batch, some_dimension, 256]
-        # print('x.shape',x.shape)
-        pooled_x_list = []
 
-        for i in range(x.shape[0]):
-            # 应用池化到 (some_dimension, 256) 维度
-            pooled_x = F.adaptive_avg_pool1d(x[i:i+1].permute(0, 2, 1), 1).permute(0, 2, 1)
-            pooled_x_list.append(pooled_x)
-
-        # 拼接池化后的输出
-        x = torch.cat(pooled_x_list, dim=0)  # [batch, 1, 256]
-        x = x.squeeze(dim=1)  # 调整形状为 [batch, 256]
-        return x
-
-    
-def make_angle_encoder(in_dim,out_dim):
-    encoder = AngleEncoder(in_dim,out_dim).to('cuda')
-    return encoder
-
-def make_torque_encoder(in_dim,out_dim):
-    encoder = TorqueEncoder(in_dim,out_dim).to('cuda')
-    return encoder
 
 def make_angle_Proprioceptionencoder(in_dim,out_dim):
     encoder = Angle_ProprioceptionEncoder(in_dim,out_dim).to('cuda')
@@ -191,18 +104,6 @@ def make_angle_Proprioceptionencoder(in_dim,out_dim):
 
 def make_torque_Proprioceptionencoder(in_dim,out_dim):
     encoder = Torque_ProprioceptionEncoder(in_dim,out_dim).to('cuda')
-    return encoder
-
-def make_torque_encoder(in_dim,out_dim):
-    encoder = Torque_ProprioceptionEncoder(in_dim,out_dim).to('cuda')
-    return encoder
-
-def make_share_POS_encoder(in_dim,out_dim):
-    encoder = share_Encoder_pos(in_dim,out_dim).to('cuda')
-    return encoder
-
-def make_share_encoder(in_dim,out_dim):
-    encoder = share_Encoder(in_dim,out_dim).to('cuda')
     return encoder
 
 

@@ -1,7 +1,6 @@
 import os
 from datetime import datetime
 import yaml
-from mjrl.utils.gym_env import GymEnv
 from pytorch_lightning import Trainer
 from pytorch_lightning.callbacks import ModelCheckpoint
 from pytorch_lightning.loggers import TensorBoardLogger
@@ -22,14 +21,14 @@ def save_config(args):
     return exp_dir
 
 def start_training(args, exp_dir, pl_module,monitor="val/loss"):
-    start_time = datetime.now()  # 开始计时
+    start_time = datetime.now()  
     jobid = np.random.randint(0, 1000)
     jobid = os.environ.get("SLURM_JOB_ID", 0)
     exp_time = datetime.now().strftime("%m-%d-%H:%M:%S")
     if args.train:
 
         study = optuna.create_study(direction='minimize')
-        objective = lambda trial: trial.suggest_float("lambda_param", 0.1, 1.0)  # 在指定范围内随机选择lambda_param的值
+        objective = lambda trial: trial.suggest_float("lambda_param", 0.1, 1.0)  
         study.optimize(objective, n_trials=args.num_trials)
         best_trial = study.best_trial
         lambda_param = best_trial.params["lambda_param"]
@@ -39,7 +38,7 @@ def start_training(args, exp_dir, pl_module,monitor="val/loss"):
         checkpoint = ModelCheckpoint(
             dirpath=os.path.join(exp_dir, "checkpoints", args.task),
             filename=exp_time+ args.task + "-{epoch}-{step}",
-            save_top_k = 1,  #保存几个最佳模型
+            save_top_k = 1,  
             save_last=True,
             monitor=monitor,
             # mode="max",
@@ -71,24 +70,21 @@ def start_training(args, exp_dir, pl_module,monitor="val/loss"):
             else os.path.join(os.getcwd(), args.resume),
         )
 
-        end_time = datetime.now()   # 结束计时
-        total_time = end_time - start_time  # 计算总时间
+        end_time = datetime.now()   
+        total_time = end_time - start_time  
         print(f"Training started at {start_time} and ended at {end_time}")
         print(f"Total training time: {total_time}")
         print("best_model", checkpoint.best_model_path)
         print("best_model_score", checkpoint.best_model_score)
-        # 添加训练结束时间、总训练时间、最佳模型路径和得分等信息到参数(args)中
         args.training_end_time = end_time.strftime("%Y-%m-%d %H:%M:%S")
         args.total_training_time = str(total_time)
         args.best_model_path = checkpoint.best_model_path
         args.best_model_score = float(checkpoint.best_model_score)
 
-        # 将信息保存到 conf.yaml 文件中
         with open(os.path.join(exp_dir, "conf.yaml"), "w") as outfile:
             yaml.safe_dump(vars(args), outfile)
 
     else:
-        # 定义trainer并测试
         logger = TensorBoardLogger(
             save_dir=exp_dir, version=exp_time + "test_" + args.task, name="lightning_logs"
         )
