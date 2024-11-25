@@ -1,10 +1,10 @@
-### 输入输出维度 ###
+
 encoder_dim: 256
 observation_dim: 6
 torque_dim: 6
 angle_dim: 6
 action_dim: 6
-### one hot dim
+
 one_hot_torque_dim: 42
 one_hot_angle_dim: 42
 picture_dim: 22500
@@ -14,9 +14,6 @@ frameskip: 5
 crop_percent: 0.1
 conv_bottleneck: 128
 
-
-### image ###
-# 0 (no nocrop) /  1 (nocrop)
 nocrop: 0
 resized_height_t: 75
 resized_height_v: 100
@@ -29,16 +26,15 @@ inspire: 1000
 gamma: 0.9
 num_heads: 8
 norm_audio: True
-# m_mha a_mha c_mha no_mha expert w_mha
+# m_mha no_mha 
 use_way : m_mha
 use_mha: True
-use_amha: False  #False
+use_amha: False  
 
 # 0 (no pos) /  1 (pos)
 use_pos: 1
 # 0 (no one_hot) /  1 (one_hot)
 use_one_hot: 1
-# exp_name: default
 task: "j_f"
 aux_multiplier: 1.0
 env_name: "hand-v1"
@@ -68,27 +64,8 @@ v_j_ckpt: policy/exp06222024j_vf_pos/checkpoints/j_vf_pos/06-22-00:11:37j_vf_pos
 v_f_ckpt: policy/exp06222024vf_f_pos/checkpoints/vf_f_pos/06-22-00:11:35vf_f_pos-epoch=86-step=126585.ckpt
 
 
-# a_mha
-# policy/exp06192024j_f_vf_pos/checkpoints/j_f_vf_pos/06-19-10:36:21j_f_vf_pos-epoch=96-step=282173.ckpt
-
-
 # j_f_vf_m_pos
 j_f_vf_m_pos_ckpt: policy/exp06272024j_f_vf_a_mha_pos/checkpoints/j_f_vf_a_mha_pos/06-27-21:46:05j_f_vf_a_mha_pos-epoch=86-step=126585.ckpt
-
-# policy/exp06292024j_f_vf_m_pos/checkpoints/j_f_vf_m_pos/06-29-21:12:00j_f_vf_m_pos-epoch=48-step=72667.ckpt
-
-# policy/exp06272024j_f_vf_a_mha_pos/checkpoints/j_f_vf_a_mha_pos/06-27-21:46:05j_f_vf_a_mha_pos-epoch=86-step=126585.ckpt
-
-# policy/exp06272024j_f_vf_pos/checkpoints/j_f_vf_pos/06-27-15:59:06j_f_vf_pos-epoch=92-step=135315.ckpt
-
-# policy/exp06272024j_f_vf_m_pos/checkpoints/j_f_vf_m_pos/06-27-21:46:56j_f_vf_m_pos-epoch=52-step=78599.ckpt
-
-# policy/exp06272024j_f_vf_pos/checkpoints/j_f_vf_pos/06-27-15:59:06j_f_vf_pos-epoch=92-step=135315.ckpt
-
-# policy/exp06272024j_f_vf_a_mha_pos/checkpoints/j_f_vf_a_mha_pos/06-27-21:46:05j_f_vf_a_mha_pos-epoch=86-step=126585.ckpt
-
-#  best_policy/06-18-23:49:35j_f_vf_pos-epoch=43-step=64020.ckpt
-
 
 # j_f_vf_m
 j_f_vf_m_ckpt: policy/exp06192024j_f_vf/checkpoints/j_f_vf/06-19-10:33:32j_f_vf-epoch=71-step=104760.ckpt
@@ -96,41 +73,6 @@ j_f_vf_m_ckpt: policy/exp06192024j_f_vf/checkpoints/j_f_vf/06-19-10:33:32j_f_vf-
 # no_mha
 j_f_vf_ckpt: policy/exp06202024j_f_vf_no_mha/checkpoints/j_f_vf_no_mha/06-20-08:53:58j_f_vf_no_mha-epoch=98-step=287991.ckpt
 
-# best_policy/06-18-23:49:35j_f_vf_pos-epoch=43-step=64020.ckpt
-# best_policy/06-18-00:07:24j_f_pos-epoch=82-step=241447.ckpt
-# best_policy/06-17-15:54:04j_f_vf_pos-epoch=97-step=142590.ckpt
-# best_policy/06-18-00:01:53j_f_vf-epoch=99-step=145500.ckpt
-# best_policy/06-11-11:19:08f_vf-epoch=81-step=119310.ckpt
-# best_policy/06-11-22:53:57j_f_vf_pos-epoch=85-step=125130.ckpt
-# 05-23-22:36:16j_f_vf_frog_dragon_f_a_l1loss-epoch=5-step=2304.ckpt
-# 05-21-22:57:44j_f_vf_frog(one)_loss_mlp-epoch=6-step=1673.ckpt
-# 05-27-15:19:31j_f_vf_all_huber-epoch=3-step=3648.ckpt
-# 05-27-15:57:17j_f_vf_all_huber-epoch=18-step=17328.ckpt
-# 05-27-17:00:08j_f_frog_dragon_huber_f_a-epoch=99-step=94200.ckpt
-# 05-29-09:50:22j_f_vf_all_huber-epoch=28-step=16733.ckpt
-# 06-03-10:02:21j_f_vf_all_huber-epoch=4-step=7275.ckpt()
-# 06-04-22:45:31j_f_amlp_data_amha-epoch=94-step=138225.ckpt
-# 06-04-09:06:59j_f_vf_amlp_data-epoch=88-step=129495.ckpt
 
 
-## action type
-# dis_actions : 0 # False
-## visualize   interval  间隔数
-weights_visualize_interval: 1
-# visualize   0 （不可视化） /  1 (可视化)
-weights_visualize: 1
-scores_visualize: 1
-save_scores: 0
-save_weights: 0
-
-
-
-# transformer
-hidden_dim: 512
-dropout: 0.1
-nheads: 8
-dim_feedforward: 3200
-enc_layers: 4
-dec_layers: 7
-pre_norm: False
 
