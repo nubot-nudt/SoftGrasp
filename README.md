@@ -24,8 +24,7 @@ train_utils.py ：
 
  trainer.fit(
         pl_module,
-        ckpt_path='exp05132024j_f_vf/imi_learn_1/checkpoints/j_f_vf_share/last.ckpt'
-        # ckpt_path=None
+        ckpt_path=None
         if args.resume is None
         else os.path.join(os.getcwd(), args.resume),
     )
@@ -34,7 +33,6 @@ ckpt_path （Resume training from previous policy）
 ```
 python visualize_real.py 
 
-python visualize_policy.py 
 ```
 episode_times_1.csv
 | file      | Description |
