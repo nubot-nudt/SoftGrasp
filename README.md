@@ -7,18 +7,6 @@ This repo contains the implementation of our paper:
 > [YiHong Li](https://github.com/swagyiyi), [Ce Guo](https://github.com/henghenghahei849), [Junkai Ren*](https://github.com/jkren6), [Bailiang Chen](https://github.com/skywalker1941), Chuang Cheng, Hui Zhang*, Huimin Lu
 >
 
-### Video  
-## Immersive Demonstration Data Collection
-
-![image](https://github.com/nubot-nudt/SoftGrasp/blob/main/picture/teleporation.gif)
-
-## Partial display of captured objects
-
-![image](https://github.com/nubot-nudt/SoftGrasp/blob/main/picture/object.gif)
-
-## Systematic and Ablation Study
-
-![image](https://github.com/nubot-nudt/SoftGrasp/blob/main/picture/Ablation_Study.gif)
 
 
 ## install
